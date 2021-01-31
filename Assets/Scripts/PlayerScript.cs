@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
+    public GameObject bullet;
     // Start is called before the first frame update
     void Start()
     {
-
+        StartCoroutine("Shoot");
     }
 
     // Update is called once per frame
@@ -21,5 +22,14 @@ public class PlayerScript : MonoBehaviour
             Mathf.Clamp(transform.position.y + dy, -4.5f, 4.5f),
             0f
         );
+    }
+    IEnumerator Shoot()
+    {
+      while(true)
+      {
+        Instantiate(bullet, transform.position, transform.rotation);
+        yield return new WaitForSeconds(0.2f);
+      }
+
     }
 }
