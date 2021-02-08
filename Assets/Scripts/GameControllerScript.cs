@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameControllerScript : MonoBehaviour
 {
     public GameObject enemy;
     private int score;
     public Text scoreText;
+    public Text replayText;
+    private bool isGameOver;
     // Start is called before the first frame update
     IEnumerator SpawnEnemy()
     {
@@ -27,12 +30,35 @@ public class GameControllerScript : MonoBehaviour
     {
         StartCoroutine("SpawnEnemy");
         score = 0;
-        scoreText.text = "Score:" + score;
+        UpdateScoreText();
+        replayText.text = "";
+        isGameOver = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+      if(!isGameOver)
+      {
+          return;
+      }
+      if(Input.GetKey(KeyCode.Space))
+      {
+          SceneManager.LoadScene("MainScene");
+      }
+    }
+    public void AddScore(int scoreToAdd)
+    {
+        score += scoreToAdd;
+        UpdateScoreText();
+    }
+    void UpdateScoreText()
+    {
+        scoreText.text = "Score:" + score;
+    }
+    public void GameOver()
+    {
+        isGameOver = true;
+        replayText.text = "Hit SPACE to replay!";
     }
 }

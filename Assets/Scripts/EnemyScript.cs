@@ -6,10 +6,14 @@ public class EnemyScript : MonoBehaviour
 {
     public GameObject explosion;
     private float phase;
+    private GameControllerScript gameController;
     // Start is called before the first frame update
     void Start()
     {
       phase = Random.Range(0f, Mathf.PI *2);
+      gameController = GameObject
+          .FindWithTag("GameController")
+          .GetComponent<GameControllerScript>();
     }
 
     // Update is called once per frame
@@ -24,12 +28,14 @@ public class EnemyScript : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Bullet"))
         {
+          gameController.AddScore(10);
           Instantiate(explosion, transform.position, transform.rotation);
           Destroy(collision.gameObject);
           Destroy(gameObject);
         }
         if(collision.gameObject.CompareTag("Player"))
         {
+          gameController.GameOver();
           Instantiate(explosion, transform.position, transform.rotation);
           Instantiate(explosion, collision.transform.position, collision.transform.rotation);
           Destroy(collision.gameObject);
